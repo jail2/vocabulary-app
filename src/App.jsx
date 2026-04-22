@@ -72,7 +72,11 @@ function App() {
   };
 
   const handleSelectReviewSet = ({ lecture, exercise, words }) => {
-    setSelectedStudySet({ lecture, exercise, words });
+    const wordsWithIds = words.map(w => {
+      const fullWord = allWords.find(aw => aw.word === w.word);
+      return fullWord || { ...w, id: `${lecture}-${exercise}-${w.word}` };
+    });
+    setSelectedStudySet({ lecture, exercise, words: wordsWithIds });
     setFlashcardIndex(0);
     setCurrentView('flashcardReview');
   };
