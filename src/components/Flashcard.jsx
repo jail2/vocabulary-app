@@ -16,7 +16,9 @@ const Flashcard = ({ word, onNext, onAnswer }) => {
     e.preventDefault();
     if (!userAnswer.trim()) return;
     
-    const isCorrect = userAnswer.toLowerCase().trim() === word.word.toLowerCase();
+    const normalizedUserAnswer = userAnswer.toLowerCase().trim().replace(/\s+/g, ' ');
+    const normalizedWord = word.word.toLowerCase().trim().replace(/\s+/g, ' ');
+    const isCorrect = normalizedUserAnswer === normalizedWord;
     setAnswered(true);
     onAnswer(word.id, isCorrect);
   };
@@ -61,14 +63,19 @@ const Flashcard = ({ word, onNext, onAnswer }) => {
           </div>
         ) : (
           <div className="text-center">
-            {answered && (
-              <div className={`mb-4 flex items-center justify-center gap-2 ${userAnswer.toLowerCase().trim() === word.word.toLowerCase() ? 'text-green-600' : 'text-red-600'}`}>
-                {userAnswer.toLowerCase().trim() === word.word.toLowerCase() ? <Check size={24} /> : <X size={24} />}
-                <span className="font-semibold">
-                  {userAnswer.toLowerCase().trim() === word.word.toLowerCase() ? '정답!' : '오답'}
-                </span>
-              </div>
-            )}
+            {answered && (() => {
+              const normalizedUserAnswer = userAnswer.toLowerCase().trim().replace(/\s+/g, ' ');
+              const normalizedWord = word.word.toLowerCase().trim().replace(/\s+/g, ' ');
+              const isCorrect = normalizedUserAnswer === normalizedWord;
+              return (
+                <div className={`mb-4 flex items-center justify-center gap-2 ${isCorrect ? 'text-green-600' : 'text-red-600'}`}>
+                  {isCorrect ? <Check size={24} /> : <X size={24} />}
+                  <span className="font-semibold">
+                    {isCorrect ? '정답!' : '오답'}
+                  </span>
+                </div>
+              );
+            })()}
             <p className="text-gray-500 text-sm mb-2">{word.lecture} - {word.exercise}</p>
             <h2 className="text-4xl font-bold text-blue-600 mb-4">{word.word}</h2>
             <p className="text-2xl text-gray-700 mb-8">{word.meaning}</p>
