@@ -160,7 +160,10 @@ const WrittenTest = ({ words, onComplete, onBack }) => {
                   {index + 1}
                 </div>
                 <div className="flex-1">
-                  <p className="text-xl font-bold text-gray-800 mb-2">{word.word}</p>
+                  <p className="text-xl font-bold text-gray-800 mb-1">{word.word}</p>
+                  {word.partOfSpeech && (
+                    <p className="text-xs text-purple-600 mb-2 font-medium">{word.partOfSpeech}</p>
+                  )}
                   <input
                     type="text"
                     ref={el => inputRefs.current[index] = el}

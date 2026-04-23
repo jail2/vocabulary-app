@@ -100,7 +100,10 @@ const TapToReveal = ({ words, lecture, exercise, onBack }) => {
                   transform: 'translateY(20px)'
                 }}
               >
-                <p className="text-xl font-bold text-blue-600 mb-2">{word.word}</p>
+                <p className="text-xl font-bold text-blue-600 mb-1">{word.word}</p>
+                {word.partOfSpeech && (
+                  <p className="text-xs text-purple-600 mb-2 font-medium">{word.partOfSpeech}</p>
+                )}
                 <p className="text-sm text-gray-700">{word.meaning}</p>
               </div>
             ))}
@@ -134,7 +137,10 @@ const TapToReveal = ({ words, lecture, exercise, onBack }) => {
           className="min-h-[300px] flex flex-col justify-center items-center cursor-pointer rounded-xl bg-gradient-to-br from-blue-50 to-purple-50 hover:from-blue-100 hover:to-purple-100 transition p-8"
         >
           <div className="text-center">
-            <p className="text-5xl font-bold text-blue-600 mb-4">{currentWord.word}</p>
+            <p className="text-5xl font-bold text-blue-600 mb-2">{currentWord.word}</p>
+            {currentWord.partOfSpeech && (
+              <p className="text-sm text-purple-600 mb-4 font-medium">{currentWord.partOfSpeech}</p>
+            )}
             
             {showMeaning ? (
               <>

@@ -89,7 +89,10 @@ const Flashcard = ({ word, onNext, onAnswer }) => {
               );
             })()}
             <p className="text-gray-500 text-sm mb-2">{word.lecture} - {word.exercise}</p>
-            <h2 className="text-4xl font-bold text-blue-600 mb-4">{word.word}</h2>
+            <h2 className="text-4xl font-bold text-blue-600 mb-2">{word.word}</h2>
+            {word.partOfSpeech && (
+              <p className="text-sm text-purple-600 mb-4 font-medium">{word.partOfSpeech}</p>
+            )}
             <p className="text-2xl text-gray-700 mb-8">{word.meaning}</p>
             <button
               onClick={handleNext}
