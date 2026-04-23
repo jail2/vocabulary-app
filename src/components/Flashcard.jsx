@@ -1,10 +1,22 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { RotateCw, Check, X, ArrowRight } from 'lucide-react';
 
 const Flashcard = ({ word, onNext, onAnswer }) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [answered, setAnswered] = useState(false);
   const [userAnswer, setUserAnswer] = useState('');
+
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      if (e.code === 'Space' && answered) {
+        e.preventDefault();
+        handleNext();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [answered]);
 
   const handleFlip = () => {
     if (!answered) {
