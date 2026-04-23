@@ -5,6 +5,8 @@ const TapToReveal = ({ words, lecture, exercise, onBack }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showMeaning, setShowMeaning] = useState(false);
   const [shuffled, setShuffled] = useState(() => [...words].sort(() => Math.random() - 0.5));
+  const [showGridView, setShowGridView] = useState(false);
+  const [pressedKeys, setPressedKeys] = useState(new Set());
 
   const currentWord = shuffled[currentIndex];
 
@@ -30,6 +32,8 @@ const TapToReveal = ({ words, lecture, exercise, onBack }) => {
 
   useEffect(() => {
     const handleKeyDown = (e) => {
+      setPressedKeys(prev => new Set(prev).add(e.key.toLowerCase()));
+
       if (e.key === 'ArrowLeft') {
         handlePrev();
       } else if (e.key === 'ArrowRight') {
@@ -40,12 +44,30 @@ const TapToReveal = ({ words, lecture, exercise, onBack }) => {
       }
     };
 
+    const handleKeyUp = (e) => {
+      setPressedKeys(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(e.key.toLowerCase());
+        return newSet;
+      });
+    };
+
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+    };
   }, [currentIndex, showMeaning]);
 
+  useEffect(() => {
+    if (pressedKeys.has('q') && pressedKeys.has('p')) {
+      setShowGridView(true);
+    }
+  }, [pressedKeys]);
+
   return (
-    <div className="w-full max-w-2xl mx-auto">
+    <div className="w-full max-w-6xl mx-auto">
       <button
         onClick={onBack}
         className="mb-4 text-gray-600 hover:text-gray-800 flex items-center gap-2"
@@ -53,8 +75,40 @@ const TapToReveal = ({ words, lecture, exercise, onBack }) => {
         ← 뒤로 가기
       </button>
 
-      <div className="bg-white rounded-2xl shadow-xl p-6">
-        <div className="flex justify-between items-center mb-6">
+      {showGridView ? (
+        <div className="space-y-4">
+          <div className="flex justify-between items-center">
+            <div>
+              <p className="text-sm text-gray-500">{lecture}</p>
+              <p className="text-sm text-gray-500">{exercise}</p>
+            </div>
+            <button
+              onClick={() => setShowGridView(false)}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+            >
+              닫기
+            </button>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {shuffled.map((word, index) => (
+              <div
+                key={index}
+                className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                style={{
+                  animation: `fadeInUp 0.5s ease-out ${index * 50}ms forwards`,
+                  opacity: 0,
+                  transform: 'translateY(20px)'
+                }}
+              >
+                <p className="text-xl font-bold text-blue-600 mb-2">{word.word}</p>
+                <p className="text-sm text-gray-700">{word.meaning}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className="bg-white rounded-2xl shadow-xl p-6">
+          <div className="flex justify-between items-center mb-6">
           <div>
             <p className="text-sm text-gray-500">{lecture}</p>
             <p className="text-sm text-gray-500">{exercise}</p>
@@ -67,7 +121,7 @@ const TapToReveal = ({ words, lecture, exercise, onBack }) => {
             <RotateCw size={20} />
             섞기
           </button>
-        </div>
+          </div>
 
         <div className="text-center mb-4">
           <span className="text-gray-600">
@@ -134,6 +188,7 @@ const TapToReveal = ({ words, lecture, exercise, onBack }) => {
           </button>
         </div>
       </div>
+      )}
     </div>
   );
 };
