@@ -15,7 +15,7 @@ const WrittenTest = ({ words, onComplete, onBack }) => {
   };
 
   const handleKeyDown = (e, index) => {
-    if (e.key === ' ' && index < words.length - 1) {
+    if (e.key === 'Enter' && index < words.length - 1) {
       e.preventDefault();
       inputRefs.current[index + 1]?.focus();
     }
