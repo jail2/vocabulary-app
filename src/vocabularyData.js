@@ -47,7 +47,7 @@ export const vocabularyData = {
       { word: "promotion", meaning: "증진" },
       { word: "insufficient", meaning: "충분하지 못한" },
       { word: "advocate", meaning: "옹호자" },
-      { word: "maintain", meaning: "주장하다" },
+      { word: "maintain", meaning: "주장하다", partOfSpeech: "verb" },
       { word: "go far enough", meaning: "(원하는 만큼) 충분하다" },
       { word: "excess", meaning: "(보통 복수로) 잔혹 행위, 지나친 행위" },
       { word: "fundamental", meaning: "근본적인" },
@@ -151,7 +151,7 @@ export const vocabularyData = {
       { word: "encounter", meaning: "부닥치다, 마주치다" },
       { word: "flee from", meaning: "~로부터 도망치다" },
       { word: "fulfill", meaning: "발휘하다, 다하다" },
-      { word: "maintain", meaning: "유지하다" },
+      { word: "maintain", meaning: "유지하다", partOfSpeech: "verb" },
       { word: "lifespan", meaning: "수명" }
     ]
   }
