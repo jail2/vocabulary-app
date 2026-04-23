@@ -17,7 +17,11 @@ const WrittenTest = ({ words, onComplete, onBack }) => {
   const handleKeyDown = (e, index) => {
     if (e.key === 'Enter' && index < words.length - 1) {
       e.preventDefault();
-      inputRefs.current[index + 1]?.focus();
+      const nextInput = inputRefs.current[index + 1];
+      if (nextInput) {
+        nextInput.focus();
+        nextInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
     }
   };
 
