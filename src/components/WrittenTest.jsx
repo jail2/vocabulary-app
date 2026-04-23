@@ -1,16 +1,24 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { ChevronLeft, CheckCircle, XCircle, RotateCw } from 'lucide-react';
 
 const WrittenTest = ({ words, onComplete, onBack }) => {
   const [answers, setAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [results, setResults] = useState(null);
+  const inputRefs = useRef([]);
 
   const handleAnswerChange = (index, value) => {
     setAnswers(prev => ({
       ...prev,
       [index]: value.trim()
     }));
+  };
+
+  const handleKeyDown = (e, index) => {
+    if (e.key === ' ' && index < words.length - 1) {
+      e.preventDefault();
+      inputRefs.current[index + 1]?.focus();
+    }
   };
 
   const handleSubmit = () => {
@@ -151,8 +159,10 @@ const WrittenTest = ({ words, onComplete, onBack }) => {
                   <p className="text-xl font-bold text-gray-800 mb-2">{word.word}</p>
                   <input
                     type="text"
+                    ref={el => inputRefs.current[index] = el}
                     value={answers[index] || ''}
                     onChange={(e) => handleAnswerChange(index, e.target.value)}
+                    onKeyDown={(e) => handleKeyDown(e, index)}
                     placeholder="한국어 뜻을 입력하세요"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
