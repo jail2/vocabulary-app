@@ -10,7 +10,7 @@ const WrittenTest = ({ words, onComplete, onBack }) => {
   const handleAnswerChange = (index, value) => {
     setAnswers(prev => ({
       ...prev,
-      [index]: value.trim()
+      [index]: value
     }));
   };
 
@@ -23,7 +23,7 @@ const WrittenTest = ({ words, onComplete, onBack }) => {
 
   const handleSubmit = () => {
     const gradedResults = words.map((word, index) => {
-      const userAnswer = answers[index] || '';
+      const userAnswer = (answers[index] || '').trim();
       const correctAnswer = word.meaning;
       
       // Simple matching - check if user answer contains key parts of the correct meaning
